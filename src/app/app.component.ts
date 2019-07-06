@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/python/python'
 import { ApiService } from './services/api.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,14 +12,21 @@ import { ApiService } from './services/api.service';
 export class AppComponent {
   title = 'open-ide';
   code:string = "";
-
+  error;
+  result;
+  options = {
+    lineNumbers: true,
+    theme: 'twilight',
+    // lineWrapping : true,
+    mode: { name: 'python' },
+  };
   constructor(
     private _apiService: ApiService,)
   {}
 
-  result;
   public run() {
     this.result = "";
+    this.error = "";
     this._apiService.getSubmissionsToken(this.code.replace('"','\"'))
       .subscribe((data) => {
         let submissionsToken = data['token']
@@ -39,9 +48,19 @@ export class AppComponent {
         }
         // console.log(this.code)
         this.result = data['stdout'];
+        this.error = data['stderr']
       }, (error) => {
         console.log(error);
       });
+  }
+
+  changeCodemirrorMode(mode_name){
+    this.options = {
+      lineNumbers: true,
+      theme: 'twilight',
+      // lineWrapping : true,
+      mode: { name: mode_name },
+    };
   }
 
 }

@@ -6,14 +6,11 @@
 </div>
 <!-- <h2>{{code}} </h2> -->
 <button (click)='run()'>RUN</button> 
-<h3>stdout: {{result}}</h3>
+<pre><b>stdout:</b> {{result}}</pre>
+<pre style="color: red"><b>stderr:</b> {{error}}</pre>
 <ngx-codemirror 
   [(ngModel)]="code" 
-  [options]="{
-    lineNumbers: true,
-    theme: 'material',
-    mode: 'markdown'
-  }"[autoFocus]=true
+  [(options)]="options"[autoFocus]=true
 ></ngx-codemirror>
 
 <router-outlet></router-outlet>
